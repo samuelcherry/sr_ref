@@ -1,9 +1,19 @@
+import { useState, useEffect } from "react"
+import fetchPosts from "../api/fetchPosts"
+
+const [posts, setPosts] = useState([])
+
+useEffect(() => {
+    fetchPosts()
+})
+
+
 const dummyData = [
     {
-        id:0, username: "WhiteTomBrady", content: "They call me White Tom Brady"
+        postId:0, userId: "WhiteTomBrady", content: "They call me White Tom Brady"
     },
     {
-        id:0, username: "Spike", content: "see you space cowboy"
+        postId:0, userId: "Spike", content: "see you space cowboy"
     }]
 
 const MainContent = () => {
@@ -13,8 +23,8 @@ const MainContent = () => {
                 {dummyData.map((message) => (
                     <div
                         className="bg-gray-300 w-1/5 p-2 m-2 rounded-lg"
-                        key={message.id}>
-                        <p className="font-bold">{message.username}</p>
+                        key={message.postId}>
+                        <p className="font-bold">{message.userId}</p>
                         <p>{message.content}s</p>
                     </div>
                 ))}

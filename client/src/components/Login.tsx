@@ -3,14 +3,35 @@ import { useNavigate } from "react-router-dom"
 
 const Login = () => {
 
-    const [email, setEmail] = useState("")
-
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
     const navigate = useNavigate()
 
-    const handleLogin = () => {
-        navigate("/")
+    const handleLogin = async(e:React.ChangeEvent) => {
+        e.preventDefault()
+        try {
+            const response = await fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify({email, password})
+            })
+
+            const data = await response.json()
+
+            if (response.ok){
+                setMessage(data.message);
+                localStorage.setItem("token", data.token)
+                navigate("/")
+            }else{
+                setMessage(data.message || "login failed")
+            }
+
+        } catch (error) {
+            console.error("Login Failure")
+        }
+
     }
 
         const handleRegister = () => {
