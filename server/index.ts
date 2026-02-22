@@ -90,4 +90,24 @@ app.post("/login", async(req,res) => {
 })
 
 
+app.get("/posts", async (req,res) => {
+    try {
+        const result = await pool.query(`
+            SELECT
+                p."postId",
+                p.content,
+                p."created_at",
+                u.username
+            FROM posts p
+            JOIN users u ON p."userId" = u."id"
+            ORDER BY p."created_at" DESC
+        `)
+
+        return res.status(200).json(result.rows)
+    } catch (error) {
+        res.status(500).json({error: "Internal server error"})
+    }
+});
+
+
 app.listen(3000, () => {console.log("Server is lisening on port 3000")})

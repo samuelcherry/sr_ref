@@ -1,30 +1,29 @@
 import { useState, useEffect } from "react"
 import fetchPosts from "../api/fetchPosts"
 
-const [posts, setPosts] = useState([])
-
-useEffect(() => {
-    fetchPosts()
-})
-
-
-const dummyData = [
-    {
-        postId:0, userId: "WhiteTomBrady", content: "They call me White Tom Brady"
-    },
-    {
-        postId:0, userId: "Spike", content: "see you space cowboy"
-    }]
-
 const MainContent = () => {
+    const [posts, setPosts] = useState<any[]>([])
+
+    useEffect(() => {
+        fetchPosts()
+            .then(data => {
+                console.log("fetched posts: ", data);
+                setPosts(data);
+            })
+            .catch(err => {
+                console.error("Fetch error:", err);
+            });
+    }, []);
+
     return(
         <>
             <div className="flex flex-col items-center">
-                {dummyData.map((message) => (
+                {posts.map((message) => (
                     <div
                         className="bg-gray-300 w-1/5 p-2 m-2 rounded-lg"
                         key={message.postId}>
-                        <p className="font-bold">{message.userId}</p>
+                        <p className="font-bold">{message.username}</p>
+                        <hr/>
                         <p>{message.content}s</p>
                     </div>
                 ))}
